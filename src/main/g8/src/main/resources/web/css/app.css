@@ -1,0 +1,49 @@
+* { 
+  margin:0;
+  padding:0;
+}
+
+body { 
+  font-family:helvetica, arial, sans-serif;
+  font-size:18px;
+}
+
+p {
+  margin:1em 0;
+}
+
+ul, li {
+  list-style:none;
+}
+
+li {
+  background:#FFFDD1;
+  margin:0 0 .5em 0;
+}
+
+#container { 
+  margin:1em auto;
+  width:400px;
+}
+
+a:link, a:visited {
+  color:#F3007E;
+  text-decoration:none;
+}
+
+a:hover {
+  color:#EE56A4;
+}
+
+input[type="text"], input[type="submit"],  input[type="password"] {
+  font-size:16px;
+}
+
+dt {
+  float:left;
+  width:100px;
+}
+
+dt, dd {
+  margin:0 0 .5em 0;
+}
