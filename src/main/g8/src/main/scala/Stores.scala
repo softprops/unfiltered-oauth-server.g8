@@ -28,6 +28,7 @@ class Tokens extends DefaultTokenStore {
   def forUser(userId: String) = tmap.values flatMap {
     case a@AccessToken(key, sec, uid, consumerKey) if(a.user == userId) =>
       Seq(a)
+    case _ => Nil
   }
 }
 

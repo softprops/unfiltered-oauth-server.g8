@@ -56,7 +56,7 @@ input[type="submit"] {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding:.25em;
+  padding:.25em .5em;
   color:#fff;
   text-shadow: #333 0px 0px 2px;
   background:-webkit-gradient(
