@@ -6,6 +6,8 @@ import unfiltered.oauth.UserLike
 import unfiltered.request.{HttpRequest, Cookies, Params}
 import unfiltered.oauth.Consumer
 
+case class User(id: String, password: String) extends UserLike
+
 /** Host to OAuth server */
 class Host extends unfiltered.oauth.UserHost with Templates {
   
@@ -13,8 +15,6 @@ class Host extends unfiltered.oauth.UserHost with Templates {
   val ApproveKey = "Approve it"
   val DenyKey = "Deny it"
   
-  case class User(id: String, password: String) extends UserLike
-
   /** In a normal application we would validate the users credentials before creating a session. */
   def createSession(login:String, password:String) = {
     val sid = java.util.UUID.randomUUID.toString

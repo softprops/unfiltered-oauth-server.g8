@@ -14,7 +14,7 @@ class App(host: Host, tokens: Tokens, consumers: Consumers) extends Templates wi
   
   def intent = {
     // index
-    case GET(Path("/", r)) => index(r.underlying.getRequestURL.toString)
+    case GET(Path("/", r)) => index(r.underlying.getRequestURL.toString, host.current(r))
       
     // handler for user authentication
     case POST(Path("/authenticate", Params(params, r))) =>

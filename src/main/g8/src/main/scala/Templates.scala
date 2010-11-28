@@ -2,7 +2,7 @@ package com.example
 
 trait Templates {
   import unfiltered.response._
-  import unfiltered.oauth.{Consumer, Token}
+  import unfiltered.oauth.{Consumer, Token, UserLike}
   
   def page(body: scala.xml.NodeSeq) = Html(
     <html>
@@ -20,8 +20,17 @@ trait Templates {
     </html>
   )
   
-  def index(urlBase: String) = page(
-    <div>
+  def index(urlBase: String, currentUser: Option[UserLike]) = page(
+    <div>{
+        currentUser match {
+          case Some(user) => <div>
+            <p>welcome {user.id}</p>
+            <p> view your <a href="/connections">connections</a></p>
+          </div>
+          case _ => <p>not logged in.</p>
+        }
+      }
+      <p>These are your endpoints</p>
       <ul id="oauth-endpoints">
         <li>{urlBase}oauth/request_token</li>
         <li>{urlBase}oauth/authorize</li>
@@ -61,9 +70,9 @@ trait Templates {
         <input type="hidden" name="oauth_token" value={token}/>
         <dl>
           <dt><label for="username">username</label></dt>
-          <dd><input type="text" name="username" value="username"/></dd>
+          <dd><input type="text" name="username" value="jim"/></dd>
           <dt><label for="password">password</label></dt>
-          <dd><input type="password" name="password" value="password"/></dd>
+          <dd><input type="password" name="password" value="jim"/></dd>
           <dt></dt>
           <dd><input type="submit" value="sign in" /></dd>
         </dl>
