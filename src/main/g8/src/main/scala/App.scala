@@ -5,19 +5,22 @@ import unfiltered.response._
 import org.clapper.avsl.Logger
 import unfiltered.oauth.{Consumer, Token}
 
-class App(host: Host, tokens: Tokens, consumers: Consumers) extends Templates with unfiltered.filter.Plan {
+class App(host: Host, tokens: Tokens, consumers: Consumers)
+  extends Templates with unfiltered.filter.Plan {
+
   import unfiltered.Cookie
   import QParams._
   import unfiltered.oauth.OAuth._
-  
+
   val log = Logger(classOf[App])
-  
+
   def intent = {
     // index
-    case GET(Path("/", r)) => index(r.underlying.getRequestURL.toString, host.current(r))
-      
+    case GET(Path("/")) & r =>
+      index(r.underlying.getRequestURL.toString, host.current(r))
+
     // handler for user authentication
-    case POST(Path("/authenticate", Params(params, r))) =>
+    case POST(Path("/authenticate") & Params(params)) & request =>
       val expected = for {
         token <- lookup(TokenKey) is required("oauth_token is required") is
           nonempty("oauth_token can not be blank")
@@ -35,20 +38,21 @@ class App(host: Host, tokens: Tokens, consumers: Consumers) extends Templates wi
       expected(params) orFail { fails =>
         BadRequest ~> ResponseString(fails.map { _.error } mkString(". "))
       }
-      
-    /** get a list of the current users oauth connections */
-    case GET(Path("/connections", request)) => host.current(request) match {
-      case Some(user) => connections(((Nil: List[(Token, Consumer)]) /: tokens.forUser(user.id)) ((l, t) =>
-        consumers.get(t.consumerKey) match {
-          case Some(c) => (t, c) :: l
-          case _ => l
-        })
-      )
+
+    // get a list of the current user's oauth connections
+    case GET(Path("/connections")) & request => host current(request) match {
+      case Some(user) =>
+        connections(((Nil: List[(Token, Consumer)]) /: tokens.forUser(user.id))(
+          (l, t) =>
+            consumers.get(t.consumerKey) match {
+              case Some(c) => (t, c) :: l
+              case _ => l
+            }))
       case None => Redirect("/")
     }
-    
-    /** delete a target oauth connection */
-    case GET(Path(Seg("connections" :: "disconnect" :: key :: Nil), request)) =>
+
+    // delete a target oauth connection
+    case GET(Path(Seg("connections" :: "disconnect" :: key :: Nil))) & request =>
       tokens.delete(key)
       Redirect("/connections")
   }
