@@ -14,7 +14,7 @@ object Api extends unfiltered.filter.Plan {
     case GET(Path("/user") & request) =>
       request.underlying.getAttribute(XAuthorizedIdentity) match {
         case identity: String =>
-          val json = ("id" -> .toString) ~
+          val json = ("id" -> identity) ~
             ("likes" -> List("sweets"))
           JsonContent ~> ResponseString(compact(render(json)))
         case _ =>

@@ -22,9 +22,10 @@ object Server {
     unfiltered.jetty.Http(port)
       .resources(Server.resources)
       .context("/oauth") { _.filter(OAuth(stores)) }
+      .filter(new App(host, stores.tokens, stores.consumers))
       .context("/api") {
         _.filter(Protection(stores))
-         .filter(new App(host, stores.tokens, stores.consumers))
+         .filter(Api)
       }.run
   }
 }
