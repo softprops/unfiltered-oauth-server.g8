@@ -15,6 +15,7 @@ get and run the server
     
 # dependencies
   
-   * unfiltered-filter - 0.2.2-SNAPSHOT
-   * unfiltered-jetty - 0.2.2-SNAPSHOT
-   * unfiltered-oauth - 0.7.8-SNAPSHOT
+   * unfiltered-filter - 0.5
+   * unfiltered-jetty - 0.5
+   * unfiltered-oauth - 0.5
+   * unfiltered-json - 0.5
