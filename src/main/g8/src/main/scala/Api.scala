@@ -1,17 +1,18 @@
 package com.example
 
 import unfiltered.request._
+import unfiltered.filter.request.ContextPath
 import unfiltered.response._
 
 object Api extends unfiltered.filter.Plan {
 
   import unfiltered.oauth.OAuth.XAuthorizedIdentity
 
+  import net.liftweb.json._
   import net.liftweb.json.JsonDSL._
-  import net.liftweb.json.JsonAST._
 
   def intent = {
-    case GET(Path("/user") & request) =>
+    case GET(ContextPath(_,"/user") & request) =>
       request.underlying.getAttribute(XAuthorizedIdentity) match {
         case identity: String =>
           val json = ("id" -> identity) ~
