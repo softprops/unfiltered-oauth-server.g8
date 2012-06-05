@@ -1,6 +1,5 @@
 package com.example
 
-import org.clapper.avsl.Logger
 import unfiltered.Cookie
 import unfiltered.oauth.UserLike
 import unfiltered.request.{HttpRequest, Cookies, Params}
@@ -25,7 +24,7 @@ class Host extends unfiltered.oauth.UserHost with Templates {
   /** @return Some(UserLike) if the current user is logged in, None otherwise */
   def current[T](r: HttpRequest[T]) = r match {
     case Cookies(cookies) => cookies("sid") match {
-      case Some(Cookie(_, value, _, _, _, _)) => umap.get(value)
+      case Some(Cookie(_, value, _, _, _, _, _, _)) => umap.get(value)
       case _ => None
     }
     case _ => None
